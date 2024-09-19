@@ -1,10 +1,8 @@
 package br.pucminas.aluguel.model;
 
 import br.pucminas.aluguel.enumerators.TipoUsuario;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import br.pucminas.aluguel.utils.CPF;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +18,13 @@ public class Cliente extends Usuario {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
     private String rg;
+
+    @CPF
+    @Column(unique = true)
     private String cpf;
+
     private String nome;
     private String endereco;
     private String profissao;
