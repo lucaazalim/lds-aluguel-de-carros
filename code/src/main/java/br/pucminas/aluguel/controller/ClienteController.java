@@ -46,10 +46,17 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public Cliente atualizarCliente(@PathVariable Long id, @RequestBody AtualizarClienteDTO atualizarClienteDTO) throws JsonMappingException {
+    public ClienteDTO atualizarCliente(@PathVariable Long id, @RequestBody AtualizarClienteDTO atualizarClienteDTO) {
         Cliente cliente = clienteRepository.findById(id).orElseThrow();
-        objectMapper.updateValue(atualizarClienteDTO, cliente);
-        return clienteRepository.save(cliente);
+
+        cliente.setEmail(atualizarClienteDTO.getEmail());
+        cliente.setSenha(atualizarClienteDTO.getSenha());
+        cliente.setNome(atualizarClienteDTO.getNome());
+        cliente.setEndereco(atualizarClienteDTO.getEndereco());
+        cliente.setProfissao(atualizarClienteDTO.getProfissao());
+
+        Cliente updatedCliente = clienteRepository.save(cliente);
+        return objectMapper.convertValue(updatedCliente, ClienteDTO.class);
     }
 
     @DeleteMapping("/{id}")
