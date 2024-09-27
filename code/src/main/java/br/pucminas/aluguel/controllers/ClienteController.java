@@ -1,9 +1,9 @@
-package br.pucminas.aluguel.controller;
+package br.pucminas.aluguel.controllers;
 
 import br.pucminas.aluguel.dto.cliente.*;
-import br.pucminas.aluguel.model.Cliente;
-import br.pucminas.aluguel.repository.ClienteRepository;
-import br.pucminas.aluguel.service.JwtService;
+import br.pucminas.aluguel.models.Cliente;
+import br.pucminas.aluguel.repositories.ClienteRepository;
+import br.pucminas.aluguel.utils.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

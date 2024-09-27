@@ -1,4 +1,4 @@
-package br.pucminas.aluguel.model;
+package br.pucminas.aluguel.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;

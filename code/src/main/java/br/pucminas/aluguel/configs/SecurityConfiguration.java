@@ -1,4 +1,4 @@
-package br.pucminas.aluguel.config;
+package br.pucminas.aluguel.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

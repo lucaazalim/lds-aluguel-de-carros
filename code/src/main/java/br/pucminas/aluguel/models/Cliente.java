@@ -1,4 +1,4 @@
-package br.pucminas.aluguel.model;
+package br.pucminas.aluguel.models;
 
 import br.pucminas.aluguel.enumerators.TipoUsuario;
 import br.pucminas.aluguel.utils.CPF;

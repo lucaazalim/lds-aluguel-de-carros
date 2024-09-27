@@ -1,6 +1,6 @@
-package br.pucminas.aluguel.repository;
+package br.pucminas.aluguel.repositories;
 
-import br.pucminas.aluguel.model.Automovel;
+import br.pucminas.aluguel.models.Automovel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 // Esta classe é obrigatória para que seja possível usar o JPA e o Hibernate.

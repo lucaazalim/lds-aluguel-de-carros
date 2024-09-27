@@ -1,12 +1,12 @@
-package br.pucminas.aluguel.controller;
+package br.pucminas.aluguel.controllers;
 
 import br.pucminas.aluguel.dto.aluguel.AluguelDTO;
 import br.pucminas.aluguel.dto.aluguel.AtualizarAluguelDTO;
 import br.pucminas.aluguel.dto.aluguel.CriarAluguelDTO;
-import br.pucminas.aluguel.model.Aluguel;
-import br.pucminas.aluguel.model.Automovel;
-import br.pucminas.aluguel.repository.AluguelRepository;
-import br.pucminas.aluguel.repository.AutomovelRepository;
+import br.pucminas.aluguel.models.Aluguel;
+import br.pucminas.aluguel.models.Automovel;
+import br.pucminas.aluguel.repositories.AluguelRepository;
+import br.pucminas.aluguel.repositories.AutomovelRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

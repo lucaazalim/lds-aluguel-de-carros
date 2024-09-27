@@ -1,4 +1,4 @@
-package br.pucminas.aluguel.service;
+package br.pucminas.aluguel.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

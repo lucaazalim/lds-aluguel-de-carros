@@ -1,6 +1,6 @@
-package br.pucminas.aluguel.config;
+package br.pucminas.aluguel.configs;
 
-import br.pucminas.aluguel.repository.ClienteRepository;
+import br.pucminas.aluguel.repositories.ClienteRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

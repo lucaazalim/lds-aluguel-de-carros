@@ -1,6 +1,6 @@
-package br.pucminas.aluguel.repository;
+package br.pucminas.aluguel.repositories;
 
-import br.pucminas.aluguel.model.Cliente;
+import br.pucminas.aluguel.models.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

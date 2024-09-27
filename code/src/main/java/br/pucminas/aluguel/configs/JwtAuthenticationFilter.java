@@ -1,6 +1,6 @@
-package br.pucminas.aluguel.config;
+package br.pucminas.aluguel.configs;
 
-import br.pucminas.aluguel.service.JwtService;
+import br.pucminas.aluguel.utils.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
