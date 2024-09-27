@@ -1,6 +1,5 @@
-package br.pucminas.aluguel.dto;
+package br.pucminas.aluguel.dto.cliente;
 
-import jakarta.validation.constraints.Email;
 import lombok.Data;
 
 @Data

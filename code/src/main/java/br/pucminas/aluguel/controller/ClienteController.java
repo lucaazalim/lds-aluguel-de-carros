@@ -1,18 +1,19 @@
 package br.pucminas.aluguel.controller;
 
-import br.pucminas.aluguel.dto.AtualizarClienteDTO;
-import br.pucminas.aluguel.dto.ClienteDTO;
-import br.pucminas.aluguel.dto.CriarClienteDTO;
+import br.pucminas.aluguel.dto.cliente.*;
 import br.pucminas.aluguel.model.Cliente;
 import br.pucminas.aluguel.repository.ClienteRepository;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import br.pucminas.aluguel.service.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clientes")
@@ -24,9 +25,19 @@ public class ClienteController {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
+
     @PostMapping
     public ClienteDTO criarCliente(@RequestBody CriarClienteDTO criarClienteDTO) {
         Cliente cliente = objectMapper.convertValue(criarClienteDTO, Cliente.class);
+        cliente.setSenha(passwordEncoder.encode(criarClienteDTO.getSenha()));
         cliente = clienteRepository.save(cliente);
         return objectMapper.convertValue(cliente, ClienteDTO.class);
     }
@@ -50,7 +61,7 @@ public class ClienteController {
         Cliente cliente = clienteRepository.findById(id).orElseThrow();
 
         cliente.setEmail(atualizarClienteDTO.getEmail());
-        cliente.setSenha(atualizarClienteDTO.getSenha());
+        cliente.setSenha(passwordEncoder.encode(atualizarClienteDTO.getSenha()));
         cliente.setNome(atualizarClienteDTO.getNome());
         cliente.setEndereco(atualizarClienteDTO.getEndereco());
         cliente.setProfissao(atualizarClienteDTO.getProfissao());
@@ -63,6 +74,29 @@ public class ClienteController {
     public String deletarCliente(@PathVariable Long id) {
         clienteRepository.deleteById(id);
         return "Cliente deletado com sucesso!";
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginDto> authenticate(@RequestBody ClienteLoginDto clienteLoginDto) {
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        clienteLoginDto.getEmail(),
+                        clienteLoginDto.getSenha()
+                )
+        );
+
+        Cliente cliente = clienteRepository.findByEmail(clienteLoginDto.getEmail()).orElseThrow();
+
+        String jwtToken = jwtService.generateToken(cliente);
+
+        LoginDto loginDto = new LoginDto();
+
+        loginDto.setToken(jwtToken);
+        loginDto.setExpiraEm(jwtService.getExpirationTime());
+
+        return ResponseEntity.ok(loginDto);
+
     }
 
 }

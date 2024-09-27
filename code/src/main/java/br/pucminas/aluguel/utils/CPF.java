@@ -12,7 +12,9 @@ import java.lang.annotation.*;
 public @interface CPF {
 
     String message() default "CPF inválido!";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 
 }

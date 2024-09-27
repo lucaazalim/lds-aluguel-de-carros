@@ -4,7 +4,6 @@ import br.pucminas.aluguel.enumerators.TipoUsuario;
 import br.pucminas.aluguel.utils.CPF;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
