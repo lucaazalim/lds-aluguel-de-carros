@@ -3,10 +3,14 @@ package br.pucminas.aluguel.controllers;
 import br.pucminas.aluguel.dto.automovel.AtualizarAutomovelDTO;
 import br.pucminas.aluguel.dto.automovel.AutomovelDTO;
 import br.pucminas.aluguel.dto.automovel.CriarAutomovelDTO;
+import br.pucminas.aluguel.dto.cliente.ClienteDTO;
 import br.pucminas.aluguel.models.Automovel;
+import br.pucminas.aluguel.models.Cliente;
 import br.pucminas.aluguel.repositories.AutomovelRepository;
+import br.pucminas.aluguel.repositories.ClienteRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,27 +24,38 @@ public class AutomovelController {
     private AutomovelRepository automovelRepository;
 
     @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @PostMapping
     public AutomovelDTO criarAutomovel(@RequestBody CriarAutomovelDTO criarAutomovelDTO) {
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Automovel automovel = objectMapper.convertValue(criarAutomovelDTO, Automovel.class);
+
+        Cliente clienteAutenticado = clienteRepository.findByEmail(email).orElseThrow();
+
+        automovel.setProprietario(clienteAutenticado);
         automovel = automovelRepository.save(automovel);
-        return objectMapper.convertValue(automovel, AutomovelDTO.class);
+
+        return toDTO(automovel);
+
     }
 
     @GetMapping
     public List<AutomovelDTO> listarTodos() {
         List<Automovel> automoveis = automovelRepository.findAll();
         return automoveis.stream()
-                .map(automovel -> objectMapper.convertValue(automovel, AutomovelDTO.class))
+                .map(this::toDTO)
                 .toList();
     }
 
     @GetMapping("/{id}")
     public Optional<AutomovelDTO> buscarAutomovelPorId(@PathVariable Long id) {
         return automovelRepository.findById(id)
-                .map(automovel -> objectMapper.convertValue(automovel, AutomovelDTO.class));
+                .map(this::toDTO);
     }
 
     @PutMapping("/{id}")
@@ -50,13 +65,20 @@ public class AutomovelController {
         automovel.setValorDiaria(atualizarAutomovelDTO.getValorDiaria());
 
         Automovel updatedAutomovel = automovelRepository.save(automovel);
-        return objectMapper.convertValue(updatedAutomovel, AutomovelDTO.class);
+        return toDTO(updatedAutomovel);
     }
 
     @DeleteMapping("/{id}")
     public String deletarAutomovel(@PathVariable Long id) {
         automovelRepository.deleteById(id);
         return "Automóvel deletado com sucesso!";
+    }
+
+    private AutomovelDTO toDTO(Automovel automovel) {
+        AutomovelDTO automovelDTO = objectMapper.convertValue(automovel, AutomovelDTO.class);
+        ClienteDTO clienteDTO = objectMapper.convertValue(automovel.getProprietario(), ClienteDTO.class);
+        automovelDTO.setProprietario(clienteDTO);
+        return automovelDTO;
     }
 
 }

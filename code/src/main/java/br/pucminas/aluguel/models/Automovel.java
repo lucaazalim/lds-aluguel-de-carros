@@ -33,4 +33,7 @@ public class Automovel {
     @Column
     private Double valorDiaria;
 
+    @ManyToOne
+    private Cliente proprietario;
+
 }
